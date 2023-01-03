@@ -1,0 +1,37 @@
+version: '3'
+services:
+  mariadb:
+    image: mariadb
+    volumes:
+      - db:/var/lib/mysql
+    env_file: .env
+    networks:
+      - connection
+    ports:
+      - 3306:3306
+  wordpress:
+    build:
+      context: ./requirements/wordpress
+    env_file: .env
+    volumes:
+      - wordpress:/var/www/html
+    depends_on:
+      - mariadb
+    networks:
+      - connection
+  nginx:
+    build:
+      context: ./requirements/nginx
+    volumes:
+      - wordpress:/var/www/html
+    depends_on:
+      - wordpress
+    ports:
+      - 80:80
+    networks:
+      - connection
+networks:
+  connection:
+volumes:
+  db:
+  wordpress:
