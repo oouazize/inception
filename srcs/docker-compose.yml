@@ -1,17 +1,30 @@
 version: '3'
 services:
+
   mariadb:
-    image: mariadb
+    build:
+      context: ./requirements/mariadb
+      args:
+        DB_NAME: ${MYSQL_DATABASE}
+        DB_USER: ${MYSQL_USER}
+        DB_PASS: ${MYSQL_PASSWORD}
+        DB_ROOTPASS: ${MYSQL_ROOT_PASSWORD}
+    env_file: .env
     volumes:
       - db:/var/lib/mysql
-    env_file: .env
     networks:
       - connection
     ports:
       - 3306:3306
+  
   wordpress:
     build:
       context: ./requirements/wordpress
+      args:
+        DB_NAME: ${MYSQL_DATABASE}
+        DB_USER: ${MYSQL_USER}
+        DB_PASS: ${MYSQL_PASSWORD}
+        DB_HOST: ${MYSQL_HOSTNAME}
     env_file: .env
     volumes:
       - wordpress:/var/www/html
@@ -19,6 +32,7 @@ services:
       - mariadb
     networks:
       - connection
+  
   nginx:
     build:
       context: ./requirements/nginx
@@ -27,11 +41,13 @@ services:
     depends_on:
       - wordpress
     ports:
-      - 80:80
+      - 443:443
     networks:
       - connection
+
 networks:
   connection:
+
 volumes:
   db:
   wordpress:
