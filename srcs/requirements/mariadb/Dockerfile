@@ -6,17 +6,11 @@ RUN apk update && apk add --no-cache mariadb mariadb-client
 RUN mkdir /var/run/mysqld; \
     chmod 777 /var/run/mysqld; \
     sed -i "s|skip-networking|skip-networking=0|g" \
-      /etc/my.cnf.d/mariadb-server.cnf
+      /etc/my.cnf.d/mariadb-server.cnf \
+      cd /tmp; chmod u+w /tmp
 
-RUN mysql_install_db --basedir=/usr --datadir=/var/lib/mysql --user=mysql --rpm
-COPY conf/command.sql .
-RUN /usr/bin/mysqld --user=mysql --bootstrap < command.sql && rm -f command.sql
+COPY tools/create-DB.sh create-DB.sh
 
 EXPOSE 3306
-
-# COPY conf/creat-DB.sh /tmp/creat-DB.sh
-# RUN touch command.sql
 USER mysql
-CMD ["/usr/bin/mysqld", "--skip-log-error"]
-# USER mysql
-# ENTRYPOINT [ "sh", "/tmp/creat-DB.sh" ]
+ENTRYPOINT [ "sh", "create-DB.sh" 

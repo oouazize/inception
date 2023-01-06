@@ -1,6 +1,6 @@
 #!/bin/sh
 
-sleep 3
+sleep 1
 wp core download
 cp wp-config-sample.php wp-config.php
 sed -it "s/database_name_here/$MYSQL_DATABASE/g" wp-config.php
