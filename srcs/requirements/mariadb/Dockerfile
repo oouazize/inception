@@ -6,11 +6,11 @@ RUN apk update && apk add --no-cache mariadb mariadb-client
 RUN mkdir /var/run/mysqld; \
     chmod 777 /var/run/mysqld; \
     sed -i "s|skip-networking|skip-networking=0|g" \
-      /etc/my.cnf.d/mariadb-server.cnf \
-      cd /tmp; chmod u+w /tmp
+      /etc/my.cnf.d/mariadb-server.cnf; \
+      chmod u+w /tmp
 
-COPY tools/create-DB.sh create-DB.sh
+COPY tools/create-DB.sh /tmp/create-DB.sh
 
 EXPOSE 3306
 USER mysql
-ENTRYPOINT [ "sh", "create-DB.sh" 
+ENTRYPOINT [ "sh", "/tmp/create-DB.sh" ]

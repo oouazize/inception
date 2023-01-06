@@ -1,7 +1,7 @@
 #!bin/sh
 
 mysql_install_db --basedir=/usr --datadir=/var/lib/mysql --user=mysql --rpm
-cat << EOF > command.sql
+cat << EOF > /tmp/command.sql
 USE mysql;
 FLUSH PRIVILEGES;
 DELETE FROM     mysql.user WHERE User='';
@@ -15,6 +15,6 @@ GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%';
 FLUSH PRIVILEGES;
 EOF
 
-/usr/bin/mysqld --user=mysql --bootstrap < command.sql && rm -f command.sql
+/usr/bin/mysqld --user=mysql --bootstrap < /tmp/command.sql && rm -f /tmp/command.sql
 
 /usr/bin/mysqld --skip-log-error
