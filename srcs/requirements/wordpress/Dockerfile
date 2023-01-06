@@ -11,18 +11,18 @@ WORKDIR /var/www/html
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
     chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp
 # download Wordpress files
-RUN wp core download
-RUN cp wp-config-sample.php wp-config.php
+# RUN wp core download
+# RUN cp wp-config-sample.php wp-config.php
 
-RUN sed -it "s/database_name_here/$DB_NAME/g" wp-config.php && \
-    sed -it "s/username_here/$DB_USER/g" wp-config.php && \
-    sed -it "s/password_here/$DB_PASS/g" wp-config.php && \
-    sed -it "s/localhost/$DB_HOST/g" wp-config.php
+# RUN sed -it "s/database_name_here/$DB_NAME/g" wp-config.php && \
+#     sed -it "s/username_here/$DB_USER/g" wp-config.php && \
+#     sed -it "s/password_here/$DB_PASS/g" wp-config.php && \
+#     sed -it "s/localhost/$DB_HOST/g" wp-config.php
 
 # Setup administration
-# RUN wp core install --url=localhost --title="My Blog" --admin_user=oouazize --admin_password=wppass --admin_email=oz@example.com
 # RUN wp config create --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASS --dbhost=$MYSQL_HOST --dbcharset="utf8" --dbcollate="utf8_general_ci"
 # RUN wp core install --url=$DOMAIN_NAME/wordpress --title=$WP_TITLE --admin_user=$WP_ADMIN_USR --admin_password=$WP_ADMIN_PWD --admin_email=$WP_ADMIN_EMAIL --skip-email
 # RUN wp user create $WP_USR $WP_EMAIL --role=author --user_pass=$WP_PWD
-# RUN wp theme install inspiro --activate
-CMD ["/usr/sbin/php-fpm8", "-F"]
+# CMD ["/usr/sbin/php-fpm8", "-F"]
+COPY tools/create.sh /tmp/create.sh
+ENTRYPOINT [ "sh", "/tmp/create.sh" ]
