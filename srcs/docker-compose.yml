@@ -16,7 +16,7 @@ services:
       - connection
     ports:
       - 3306:3306
-  
+
   wordpress:
     build:
       context: ./requirements/wordpress
@@ -44,6 +44,14 @@ services:
       - 443:443
     networks:
       - connection
+
+  web:
+    build:
+      context: ./requirements/bonus/web
+    container_name: web
+    ports:
+      - 80:80
+    restart: always
 
 networks:
   connection:
