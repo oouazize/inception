@@ -15,6 +15,6 @@ GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%';
 FLUSH PRIVILEGES;
 EOF
 
-/usr/bin/mysqld --user=mysql --bootstrap < /tmp/command.sql && rm -f /tmp/command.sql
+/usr/bin/mysqld --user=mysql < /tmp/command.sql && rm -f /tmp/command.sql
 
 /usr/bin/mysqld --skip-log-error

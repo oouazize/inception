@@ -2,11 +2,8 @@ FROM alpine:3.16
 ARG DB_NAME DB_USER DB_PASS DB_HOST
 
 RUN apk update && apk upgrade && apk add --no-cache \
-    php8 php8-fpm php8-mysqli php8-json php8-curl \
-    php8-dom php8-exif php8-fileinfo php8-mbstring php8-openssl \
-    php8-xml php8-zip php8-phar wget curl unzip && \
-    sed -i 's/127.0.0.1:9000/9000/g' /etc/php8/php-fpm.d/www.conf && \
-    rm -f /var/cache/apk/*
+    php8 php8-fpm php8-mysqli php8-mbstring php8-phar curl && \
+    sed -i 's/127.0.0.1:9000/9000/g' /etc/php8/php-fpm.d/www.conf
 
 WORKDIR /var/www/html
 
